@@ -1,17 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import { TodoListItem } from './TodoListItem';
+import { TodoListItem } from './TodoListItem/TodoListItem';
 
-const todos: Array<Todo> =[
-  { text: "Laundry", complete: true},
-  {text: "Cleaning kitchen", complete: false}
+const initialTodos: Array<Todo> = [
+  { text: 'Laundry', complete: true },
+  { text: 'Cleaning kitchen', complete: false },
+];
 
-]
 
-const App: React.FC = () =>{
-  return <TodoListItem
-  todo= {todos[0]}
-  />
-}
+const App: React.FC = () => {
+  const [todos, setTodos]= useState(initialTodos);
+  
+  const toggleTodo : ToggleTodo = selectedTodo =>{
+    const newTodos = todos.map(todo => {
+      if (todo === selectedTodo){
+        return {
+          ...todo,
+          complete: !todo.complete
+        };
+      }
+      return todo;
+    })
+    setTodos(newTodos); 
+  }
+  return (
+    <React.Fragment>
+      <TodoListItem todo={todos[0]} toggleTodo={toggleTodo} />
+      <TodoListItem todo={todos[1]} toggleTodo={toggleTodo}/>
+
+    </React.Fragment>
+  );
+};
 
 export default App;
